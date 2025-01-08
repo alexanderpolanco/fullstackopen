@@ -1,8 +1,8 @@
  import React from "react";
 
- const Part = () => {
+ const Part = ({parte}) => {
   return (
-    <div>Part</div>
+    <div>{parte}</div>
   )
 }
 
