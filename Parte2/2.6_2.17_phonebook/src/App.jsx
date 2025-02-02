@@ -65,7 +65,7 @@ const App = () => {
       }
     } else {
       create({ name: newName, number: newNumber }).then((response)=>{
-        setPersons([...persons, { name: newName, number: newNumber }]);
+        setPersons([...persons, response]);
         handelMessage({type: "success", message: `Added ${newName}`})
         
       }).catch ((error)=>{
@@ -96,7 +96,7 @@ const App = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, [persons]);
+  }, []);
 
   return (
     <div>
