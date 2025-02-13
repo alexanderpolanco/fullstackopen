@@ -59,8 +59,10 @@ const App = () => {
             handelMessage({type: "success", message: `Updated ${personUpdated.name}`})
           })
           .catch((error) => {
-            handelMessage({type: "error", message: `Information of ${newName} has alredy removed from server`})
-            console.log(error);
+            const message = error.response.data.error;
+            handelMessage({type: "error", message: message})
+            console.log("error: ",error);
+            console.log("message: ",message);
           });
       }
     } else {
@@ -69,7 +71,8 @@ const App = () => {
         handelMessage({type: "success", message: `Added ${newName}`})
         
       }).catch ((error)=>{
-        handelMessage({type: "error", message: `Error`})
+        const message = error.response.data.error;
+        handelMessage({type: "error", message:message})
       });
     }
     setNewName("");

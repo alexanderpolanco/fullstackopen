@@ -5,7 +5,7 @@ export default function Form(props) {
   return (
     <form onSubmit={handleSubmit}>
     <div>
-      Name: <input value={newName} required onChange={(e) => handleChangeName(e)} />
+      Name: <input value={newName} required placeholder='John Doe' onChange={(e) => handleChangeName(e)} />
     </div>
     <div>
       Number:
@@ -13,6 +13,7 @@ export default function Form(props) {
         type="tel"
         value={newNumber}
         required
+        placeholder='56-9-65987456'
         onChange={(e) => handleChangeNumber(e)}
       />
     </div>
