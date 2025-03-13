@@ -4,21 +4,24 @@
     "description": "backend test for training",
     "main": "index.js",
     "scripts": {
-      "dev": "node --env-file=.env.development --watch index.js",
-      "prod": "node --watch index.js",
-      "test": "node --test"
+        "dev": "node --env-file=.env.development --watch index.js",
+        "prod": "node --watch index.js",
+        "test": "cross-env NODE_ENV=test node --env-file=.env.development --test"
     },
     "repository": {
-      "type": "git",
-      "url": "fullstackopen_blogs"
+        "type": "git",
+        "url": "fullstackopen_blogs"
     },
     "author": "Jose Polanco",
     "license": "ISC",
     "dependencies": {
-      "cors": "^2.8.5",
-      "express": "^4.21.2",
-      "mongoose": "^8.10.0"
+        "cors": "^2.8.5",
+        "express": "^4.21.2",
+        "express-async-errors": "^3.1.1",
+        "mongoose": "^8.10.0"
     },
     "devDependencies": {
+        "cross-env": "^7.0.3",
+        "supertest": "^7.0.0"
     }
-  }
+}

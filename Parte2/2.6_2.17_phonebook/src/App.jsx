@@ -61,8 +61,6 @@ const App = () => {
           .catch((error) => {
             const message = error.response.data.error;
             handelMessage({type: "error", message: message})
-            console.log("error: ",error);
-            console.log("message: ",message);
           });
       }
     } else {

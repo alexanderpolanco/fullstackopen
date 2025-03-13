@@ -17,13 +17,6 @@ mongoose.connect(config.MONGODB_URI)
     logger.error('error connecting to MongoDB:', error.message)
   })
 
-/**
- * Base de datos: bloglist
- * Usuario: blogs
- * clave: Y16wOEw2nFr35aoY
- */
-
-
 app.use(cors())
 app.use(express.static('dist'))
 app.use(express.json())
