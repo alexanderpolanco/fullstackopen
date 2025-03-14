@@ -7,7 +7,6 @@ blogsRouter.get("/", async (request, response) => {
 });
 
 blogsRouter.post("/", async (request, response) => {
-
   if (!request.body.title) {
     return response.status(400).json({ error: "missing title" });
   }
@@ -24,6 +23,21 @@ blogsRouter.post("/", async (request, response) => {
   });
   const result = await blog.save();
   response.status(201).json(result);
+});
+
+blogsRouter.delete("/:id", async (request, response) => {
+  await Blog.findByIdAndDelete(request.params.id);
+  response.status(200).end();
+});
+
+blogsRouter.put("/:id", async (request, response) => {
+  const post = request.body;
+
+  const updatedNote = await Blog.findByIdAndUpdate(request.params.id, post, {
+    new: true,
+  });
+
+  response.json(updatedNote);
 });
 
 module.exports = blogsRouter;
