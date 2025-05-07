@@ -26,4 +26,31 @@ const postBlog = async (blog, token) => {
   return response;
 };
 
-export { getAll, postBlog };
+const putBlog = async (blog) => {
+  let response = false;
+
+  try {
+    response = await axios.put(`${url}/${blog.id}`, blog);
+  } catch (error) {
+    console.error(error);
+  }
+  return response;
+};
+
+const deleteBlog = async (id,token) => {
+  let response = false;
+
+  const headers = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  try {
+    response = await axios.delete(`${url}/${id}`, headers);
+  } catch (error) {
+    console.error(error);
+  }
+  return response;
+};
+
+export { getAll, postBlog, putBlog, deleteBlog };

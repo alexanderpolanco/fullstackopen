@@ -17,3 +17,9 @@
     margin-bottom: 10px;
     border-radius: 5px;
 }
+
+.containerBlog {
+    border: solid 2px rgb(134, 134, 134);
+    padding: 5px 15px;
+    margin-bottom: 5px;
+}
