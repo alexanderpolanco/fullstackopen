@@ -1,35 +1,35 @@
-import { useState } from "react";
-import { putBlog, deleteBlog } from "../services/blogs";
+import { useState } from 'react'
+import { putBlog, deleteBlog } from '../services/blogs'
 
 const handleClickLike = async (blog, updateBlogs) => {
-  const updatedBlog = { ...blog, likes: blog.likes + 1 };
+  const updatedBlog = { ...blog, likes: blog.likes + 1 }
 
-  if ("user" in updatedBlog) {
-    delete updatedBlog.user;
+  if ('user' in updatedBlog) {
+    delete updatedBlog.user
   }
 
-  const response = await putBlog(updatedBlog);
+  const response = await putBlog(updatedBlog)
   if (response) {
-    updateBlogs();
+    updateBlogs()
   }
-};
+}
 
 const handleRemoveBlog = async (blog, token, updateBlogs) => {
-  const confirm = window.confirm(`Remove blog ${blog.title} by ${blog.author}`);
+  const confirm = window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
   if (!confirm) {
-    return;
+    return
   }
-  const response = await deleteBlog(blog.id, token);
+  const response = await deleteBlog(blog.id, token)
   if (response) {
-    updateBlogs();
+    updateBlogs()
   }
-};
+}
 
 const Blog = ({ blog, updateBlogs, session }) => {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false)
   const toggleVisibility = () => {
-    setShow(!show);
-  };
+    setShow(!show)
+  }
 
   return (
     <div>
@@ -37,7 +37,7 @@ const Blog = ({ blog, updateBlogs, session }) => {
         {`${blog.title} `}
         <button onClick={toggleVisibility}>view</button>
       </div>
-      <div className="containerBlog" style={{ display: show ? "" : "none" }}>
+      <div className="containerBlog" style={{ display: show ? '' : 'none' }}>
         <div>
           {blog.author} <button onClick={toggleVisibility}>hide</button>
         </div>
@@ -60,7 +60,7 @@ const Blog = ({ blog, updateBlogs, session }) => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Blog;
+export default Blog

@@ -1,18 +1,18 @@
-import axios from "axios";
-const baseUrl = "/api/login";
+import axios from 'axios'
+const baseUrl = '/api/login'
 
 const login = async (username, password) => {
   if (!username || !password) {
-    return { error: "Username and password are required." };
+    return { error: 'Username and password are required.' }
   }
-  let response = false;
+  let response = false
   try {
-    response = await axios.post(baseUrl, { username, password });
+    response = await axios.post(baseUrl, { username, password })
   } catch (error) {
-    return { error: error.message };
+    return { error: error.message }
   }
 
-  return response;
-};
+  return response
+}
 
-export default login;
+export default login

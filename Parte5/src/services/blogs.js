@@ -1,56 +1,56 @@
-import axios from "axios";
-const url = "/api/blogs";
+import axios from 'axios'
+const url = '/api/blogs'
 
 const getAll = async () => {
-  let response = false;
+  let response = false
   try {
-    response = await axios.get(url);
+    response = await axios.get(url)
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
-  return response;
-};
+  return response
+}
 
 const postBlog = async (blog, token) => {
-  let response = false;
+  let response = false
   const headers = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
-  };
-  try {
-    response = await axios.post(url, blog, headers);
-  } catch (error) {
-    console.error(error);
   }
-  return response;
-};
+  try {
+    response = await axios.post(url, blog, headers)
+  } catch (error) {
+    console.error(error)
+  }
+  return response
+}
 
 const putBlog = async (blog) => {
-  let response = false;
+  let response = false
 
   try {
-    response = await axios.put(`${url}/${blog.id}`, blog);
+    response = await axios.put(`${url}/${blog.id}`, blog)
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
-  return response;
-};
+  return response
+}
 
 const deleteBlog = async (id,token) => {
-  let response = false;
+  let response = false
 
   const headers = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
-  };
-  try {
-    response = await axios.delete(`${url}/${id}`, headers);
-  } catch (error) {
-    console.error(error);
   }
-  return response;
-};
+  try {
+    response = await axios.delete(`${url}/${id}`, headers)
+  } catch (error) {
+    console.error(error)
+  }
+  return response
+}
 
-export { getAll, postBlog, putBlog, deleteBlog };
+export { getAll, postBlog, putBlog, deleteBlog }
