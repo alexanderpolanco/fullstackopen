@@ -44,6 +44,7 @@ const FormLogin = ({ state, setState }) => {
       </div>
       <div>
         <Input
+          data-testid="username"
           type="text"
           value={username}
           onChange={setUsername}
@@ -52,6 +53,7 @@ const FormLogin = ({ state, setState }) => {
       </div>
       <div>
         <Input
+          data-testid="password"
           type="password"
           value={password}
           onChange={setPassword}

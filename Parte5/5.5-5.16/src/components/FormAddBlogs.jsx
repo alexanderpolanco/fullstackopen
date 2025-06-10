@@ -20,7 +20,7 @@ const FormAddBlogs = ({ handleClickCreate }) => {
         onSubmit={(event) => handleClickCreate(event, postBlog, limpiarCampos, title, author, url)}
       >
         <div>
-          <Input type="text" value={title} onChange={setTitle} label="title" />
+          <Input type="text" value={title} onChange={setTitle} label="title" data-testid="title" />
         </div>
         <div>
           <Input
@@ -28,10 +28,11 @@ const FormAddBlogs = ({ handleClickCreate }) => {
             value={author}
             onChange={setAuthor}
             label="author"
+            data-testid="author"
           />
         </div>
         <div>
-          <Input type="text" value={url} onChange={setUrl} label="url" />
+          <Input type="text" value={url} onChange={setUrl} label="url" data-testid="url" />
         </div>
         <button type="submit">create</button>
       </form>

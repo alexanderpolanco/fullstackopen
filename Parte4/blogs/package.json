@@ -6,7 +6,8 @@
     "scripts": {
         "dev": "node --env-file=.env.development --watch index.js",
         "prod": "node --watch index.js",
-        "test": "cross-env NODE_ENV=test node --env-file=.env.development --test"
+        "test": "cross-env NODE_ENV=test node --env-file=.env.development --test",
+        "start:test": "cross-env NODE_ENV=test node --env-file=.env.development --watch index.js"
     },
     "repository": {
         "type": "git",

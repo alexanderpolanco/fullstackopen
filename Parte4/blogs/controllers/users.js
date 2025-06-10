@@ -33,4 +33,11 @@ usersRouter.post("/", async (request, response) => {
   response.status(201).json(savedUser);
 });
 
+if (process.env.NODE_ENV === "test") {
+  usersRouter.delete("/testing/reset", async (request, response) => {
+    const users = await User.deleteMany({});
+    response.json(users);
+  });
+}
+
 module.exports = usersRouter;

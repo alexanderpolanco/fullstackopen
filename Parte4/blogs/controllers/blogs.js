@@ -71,4 +71,11 @@ blogsRouter.put("/:id", async (request, response) => {
   response.json(updatedNote);
 });
 
+if (process.env.NODE_ENV === "test") {
+  blogsRouter.delete("/testing/reset", async (request, response) => {
+    const blogs = await Blog.deleteMany({});
+    response.json(blogs);
+  });
+}
+
 module.exports = blogsRouter;
