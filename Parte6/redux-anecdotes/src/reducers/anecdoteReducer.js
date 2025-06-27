@@ -1,3 +1,5 @@
+import { createSlice } from "@reduxjs/toolkit";
+
 const anecdotesAtStart = [
   "If it hurts, do it more often",
   "Adding manpower to a late software project makes it later!",
@@ -6,24 +8,6 @@ const anecdotesAtStart = [
   "Premature optimization is the root of all evil.",
   "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
 ];
-
-  export const addVote = (id) => {
-    return {
-      type: "NEW_VOTE",
-      payload: {
-        id,
-      },
-    };
-  };
-
-  export const addAnecdote = (anecdote) => {
-    return {
-      type: "NEW_ANECDOTE",
-      payload: {
-        content: anecdote,
-      },
-    };
-  };
 
 const getId = () => (100000 * Math.random()).toFixed(0);
 
@@ -37,28 +21,31 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject);
 
-const anecdotesReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case "NEW_VOTE":
-      return state.map((anecdote) =>
-        anecdote.id === action.payload.id
-          ? { ...anecdote, votes: anecdote.votes + 1 }
-          : anecdote
-      );
-      break;
-    case "NEW_ANECDOTE":
+const anecdotesSlice = createSlice({
+  name: "anecdotes",
+  initialState,
+  reducers: {
+    addAnecdote(state, action) {
+      const content = action.payload;
       return [
         ...state,
         {
-          content: action.payload.content,
+          content,
           id: getId(),
           votes: 0,
         },
       ];
-      break;
-    default:
-      return state;
-  }
-};
+    },
+    addVote(state, action) {
+      const id = action.payload;
+      return state.map((anecdote) =>
+        anecdote.id === id
+          ? { ...anecdote, votes: anecdote.votes + 1 }
+          : anecdote
+      );
+    },
+  },
+});
 
-export default anecdotesReducer;
+export const { addAnecdote, addVote } = anecdotesSlice.actions;
+export default anecdotesSlice.reducer;
