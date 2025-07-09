@@ -1,4 +1,4 @@
-import { addVote } from "../reducers/anecdoteReducer";
+import { newVote } from "../reducers/anecdoteReducer";
 import { useSelector, useDispatch } from "react-redux";
 import { showNotification } from "../reducers/notificationReducer";
 
@@ -18,7 +18,7 @@ export default function AnecdoteList() {
   });
 
   const handleVote = (anecdote) => {
-    dispatch(addVote(anecdote.id));
+    dispatch(newVote(anecdote));
     dispatch(showNotification(`You voted for '${anecdote.content}'`, 5));
   };
 
