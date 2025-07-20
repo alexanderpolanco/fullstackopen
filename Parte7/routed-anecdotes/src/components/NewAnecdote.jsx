@@ -1,19 +1,32 @@
-import { useState } from "react";
+import { useField } from "../hooks/useField";
 import { useNavigate } from "react-router";
 
 export const NewAnecdote = ({ setAnecdotes, setNotification }) => {
   const navigate = useNavigate();
-  const [content, setContent] = useState("");
-  const [author, setAuthor] = useState("");
-  const [info, setInfo] = useState("");
+  const { reset: resetContent, ...content } = useField("text");
+  const { reset: resetAuthor, ...author } = useField("text");
+  const { reset: resetInfo, ...info } = useField("text");
+
+  const handleReset = (e) => {
+    e.preventDefault();
+    resetContent();
+    resetAuthor();
+    resetInfo();
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setAnecdotes((state) => [
       ...state,
-      { id: state.length + 1, content, author, info, votes: 0 },
+      {
+        id: state.length + 1,
+        content: content.value,
+        author: author.value,
+        info: info.value,
+        votes: 0,
+      },
     ]);
-    setNotification(content);
+    setNotification(content.value);
     navigate(`/`);
   };
 
@@ -23,29 +36,18 @@ export const NewAnecdote = ({ setAnecdotes, setNotification }) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+          <input name="content" {...content} />
         </div>
         <div>
           author
-          <input
-            name="author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-          />
+          <input name="author" {...author} />
         </div>
         <div>
           url for more info
-          <input
-            name="info"
-            value={info}
-            onChange={(e) => setInfo(e.target.value)}
-          />
+          <input name="info" {...info} />
         </div>
         <button>create</button>
+        <button onClick={handleReset}>reset</button>
       </form>
     </div>
   );
