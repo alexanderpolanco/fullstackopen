@@ -1,0 +1,57 @@
+import { useState } from "react";
+import Input from "./Input";
+import { postBlog } from "../services/blogs";
+
+const FormAddBlogs = ({ handleClickCreate }) => {
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [url, setUrl] = useState("");
+
+  const limpiarCampos = () => {
+    setTitle("");
+    setAuthor("");
+    setUrl("");
+  };
+
+  return (
+    <div>
+      <h1>create new</h1>
+      <form
+        onSubmit={(event) =>
+          handleClickCreate(event, postBlog, limpiarCampos, title, author, url)
+        }
+      >
+        <div>
+          <Input
+            type="text"
+            value={title}
+            onChange={setTitle}
+            label="title"
+            data-testid="title"
+          />
+        </div>
+        <div>
+          <Input
+            type="text"
+            value={author}
+            onChange={setAuthor}
+            label="author"
+            data-testid="author"
+          />
+        </div>
+        <div>
+          <Input
+            type="text"
+            value={url}
+            onChange={setUrl}
+            label="url"
+            data-testid="url"
+          />
+        </div>
+        <button type="submit">create</button>
+      </form>
+    </div>
+  );
+};
+
+export default FormAddBlogs;
