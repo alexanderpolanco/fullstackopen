@@ -37,7 +37,7 @@ const putBlog = async (blog) => {
   return response;
 };
 
-const deleteBlog = async (id, token) => {
+const eraseBlog = async (id, token) => {
   let response = false;
 
   const headers = {
@@ -53,4 +53,4 @@ const deleteBlog = async (id, token) => {
   return response;
 };
 
-export { getAll, postBlog, putBlog, deleteBlog };
+export { getAll, postBlog, putBlog, eraseBlog };

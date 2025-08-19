@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Input from "./Input";
-import { postBlog } from "../services/blogs";
 
 const FormAddBlogs = ({ handleClickCreate }) => {
   const [title, setTitle] = useState("");
@@ -18,7 +17,7 @@ const FormAddBlogs = ({ handleClickCreate }) => {
       <h1>create new</h1>
       <form
         onSubmit={(event) =>
-          handleClickCreate(event, postBlog, limpiarCampos, title, author, url)
+          handleClickCreate(event, limpiarCampos, title, author, url)
         }
       >
         <div>

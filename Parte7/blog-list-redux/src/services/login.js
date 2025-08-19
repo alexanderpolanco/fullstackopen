@@ -1,7 +1,7 @@
 import axios from "axios";
 const baseUrl = "/api/login";
 
-const login = async (username, password) => {
+const postLogin = async (username, password) => {
   if (!username || !password) {
     return { error: "Username and password are required." };
   }
@@ -15,4 +15,4 @@ const login = async (username, password) => {
   return response;
 };
 
-export default login;
+export default postLogin;

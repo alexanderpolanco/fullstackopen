@@ -1,10 +1,14 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import FormLogin from "./components/FormLogin";
 import FormAddBlogs from "./components/FormAddBlogs";
 import Togglable from "./components/Togglable";
 import Blog from "./components/Blog";
+import Notification from "./components/Notification";
 import { getAll } from "./services/blogs";
+import { initializeBlogs, createBlog, newLike } from "./reducers/blogReducer";
+import { useDispatch, useSelector } from "react-redux";
 import "./styles.css";
+import { logOut, setSession } from "./reducers/sessionReducer";
 
 const orderBlogs = (blogs) => {
   return blogs.sort((a, b) => {
@@ -27,43 +31,30 @@ const handleClickGetBlogs = async (setBlogs) => {
   }
 };
 
-const handleClickLike = async (blog, updateBlogs, putBlog) => {
-  const updatedBlog = { ...blog, likes: blog.likes + 1 };
-
-  if ("user" in updatedBlog) {
-    delete updatedBlog.user;
-  }
-
-  const response = await putBlog(updatedBlog);
-  if (response) {
-    updateBlogs();
-  }
-};
-
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [stateSession, setStateSession] = useState(null);
-  const [message, setMessage] = useState(null);
+  const blogs = useSelector((state) => state.blogs);
+  const stateSession = useSelector((state) => state.session);
+
+  const dispatch = useDispatch();
 
   const toggleFormRef = useRef();
 
   const session = localStorage.getItem("session");
+
   if (session) {
     const sessionParse = JSON.parse(session);
     if (stateSession === null) {
-      setStateSession(sessionParse);
+      dispatch(setSession(sessionParse));
     }
   }
 
   const handleClickLogout = () => {
     localStorage.removeItem("session");
-    setStateSession(null);
-    setMessage(null);
+    dispatch(logOut());
   };
 
-  const handleClickCreate = async (
+  const handleClickCreate =  (
     event,
-    postBlog,
     limpiarCampos,
     title,
     author,
@@ -71,58 +62,35 @@ const App = () => {
   ) => {
     event.preventDefault();
     if (title !== "" && author !== "" && url !== "") {
-      const response = await postBlog(
-        { title, author, url },
-        stateSession.token,
-      );
-      if (response) {
-        const { data } = response;
-
-        const blog = {
-          id: data.id,
-          title: data.title,
-          url: data.url,
-          likes: data.likes,
-          author: data.author,
-        };
-
-        handleClickGetBlogs(setBlogs);
-        setMessage({
-          description: `a new blog ${blog.title} ${blog.author}`,
-          type: "success",
-        });
-        setTimeout(() => {
-          setMessage(null);
-        }, 5000);
-      }
+      const blog = { title, author, url };
+      dispatch(createBlog(blog, stateSession.token));
 
       limpiarCampos();
       toggleFormRef.current.toggleVisibility();
     }
   };
 
+  const handleClickLike = (updateBlogs) => {
+    const { author, id, likes, title, url } = updateBlogs;
+    const updatedBlog = { author, id, likes, title, url };
+
+    dispatch(newLike(updatedBlog));
+  };
+
   useEffect(() => {
     if (stateSession) {
-      handleClickGetBlogs(setBlogs);
+      dispatch(initializeBlogs());
     }
   }, [stateSession]);
+
   return (
     <div>
       {stateSession === null ? (
-        <FormLogin
-          setState={{ setStateSession, setMessage }}
-          state={{ message }}
-        />
+        <FormLogin />
       ) : (
         <div>
           <h1>blogs</h1>
-          <div>
-            {message && (
-              <div className={message.type === "error" ? "error" : "success"}>
-                {message.description}
-              </div>
-            )}
-          </div>
+          <Notification />
           <div>
             {`${stateSession.username} logged in `}
             <button onClick={handleClickLogout}>logout</button>
@@ -136,7 +104,6 @@ const App = () => {
                 key={blog.id}
                 blog={blog}
                 updateBlogs={() => handleClickGetBlogs(setBlogs)}
-                session={stateSession}
                 handleClickLike={handleClickLike}
               />
             ))}

@@ -1,23 +1,25 @@
 import { useState } from "react";
-import { putBlog, deleteBlog } from "../services/blogs";
+import { putBlog } from "../services/blogs";
+import { deleteBlog } from "../reducers/blogReducer";
+import { useDispatch, useSelector } from "react-redux";
 
-const handleRemoveBlog = async (blog, token, updateBlogs) => {
-  const confirm = window.confirm(`Remove blog ${blog.title} by ${blog.author}`);
-  if (!confirm) {
-    return;
-  }
-  const response = await deleteBlog(blog.id, token);
-  if (response) {
-    updateBlogs();
-  }
-};
-
-const Blog = ({ blog, updateBlogs, session, handleClickLike }) => {
+const Blog = ({ blog, updateBlogs, handleClickLike }) => {
   const [show, setShow] = useState(false);
+  const dispatch = useDispatch();
+  const session = useSelector((state) => state.session);
   const toggleVisibility = () => {
     setShow(!show);
   };
 
+  const handleRemoveBlog = async (blog, token) => {
+    const confirm = window.confirm(
+      `Remove blog ${blog.title} by ${blog.author}`,
+    );
+    if (!confirm) {
+      return;
+    }
+    dispatch(deleteBlog({ blog, token }));
+  };
   return (
     <div>
       <div className="containerBlog">
@@ -42,9 +44,7 @@ const Blog = ({ blog, updateBlogs, session, handleClickLike }) => {
         <div>{blog.user?.name}</div>
         {blog.user?.username === session.username && (
           <div>
-            <button
-              onClick={() => handleRemoveBlog(blog, session.token, updateBlogs)}
-            >
+            <button onClick={() => handleRemoveBlog(blog, session.token)}>
               remove
             </button>
           </div>
