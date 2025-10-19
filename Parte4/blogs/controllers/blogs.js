@@ -36,7 +36,7 @@ blogsRouter.post("/", async (request, response) => {
     author: request.body.author,
     url: request.body.url,
     likes: request.body.likes || 0,
-    user: user._id,
+    user: user,
   });
   const savedBlog = await blog.save();
 
@@ -65,11 +65,25 @@ blogsRouter.delete("/:id", async (request, response) => {
 blogsRouter.put("/:id", async (request, response) => {
   const post = request.body;
 
-  const updatedNote = await Blog.findByIdAndUpdate(request.params.id, post, {
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, post, {
     new: true,
-  });
+  }).populate("user");
 
-  response.json(updatedNote);
+  response.json(updatedBlog);
+});
+
+blogsRouter.post("/:id/comments", async (request, response) => {
+  const body = request.body;
+  const { comment } = body;
+
+  const blog = await Blog.findById(request.params.id).populate("user");
+  blog.comments.push(comment);
+
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
+    new: true,
+  }).populate("user");
+
+  response.json(updatedBlog);
 });
 
 if (process.env.NODE_ENV === "test") {

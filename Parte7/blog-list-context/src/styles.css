@@ -1,25 +1,245 @@
+:root {
+  --color-red: red;
+  --color-green: green;
+  --color-grey: rgb(193, 193, 193);
+  --color-white: white;
+  --color-blue: #0084a8;
+  --color-blue-light: #249dbf;
+  --color-black: black;
+
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
 .error {
-  font-size: 1.5rem;
-  color: red;
-  background-color: rgb(193, 193, 193);
-  border: solid 3px red;
-  padding: 15px;
-  margin-bottom: 10px;
+  text-align: center;
+  font-size: 1rem;
+  color: var(--color-red);
+  border: solid 1px var(--color-red);
+  padding: 5px;
+  margin-bottom: 5px;
   border-radius: 5px;
 }
 
+.inputError {
+  border: solid 2px var(--color-red);
+}
+
 .success {
-  font-size: 1.5rem;
-  color: green;
-  background-color: rgb(193, 193, 193);
-  border: solid 3px green;
-  padding: 15px;
-  margin-bottom: 10px;
+  font-size: 1rem;
+  color: var(--color-green);
+  border: solid 1px var(--color-green);
+  padding: 5px;
+  margin-bottom: 5px;
   border-radius: 5px;
 }
 
 .containerBlog {
-  border: solid 2px rgb(134, 134, 134);
+  min-width: 300px;
+  border: solid 2px var(--color-grey);
   padding: 5px 15px;
   margin-bottom: 5px;
+
+  a {
+    color: var(--color-black);
+  }
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--color-blue-light);
+  padding: 10px;
+  color: var(--color-white);
+  ul {
+    padding-left: 0px;
+    display: flex;
+    gap: 5px;
+    list-style-type: none;
+  }
+
+  a {
+    color: var(--color-white);
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+.container-login {
+  background-color: var(--color-blue);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100dvh;
+}
+
+.formLogin {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  background-color: var(--color-white);
+  border-radius: 5px;
+}
+
+.container-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: calc(100dvh - 50px);
+  padding: 20px;
+  gap: 10px;
+}
+
+.container-notifications {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.input {
+  display: flex;
+  gap: 5px;
+
+  .text-label {
+    min-width: 80px;
+  }
+}
+
+.button {
+  background-color: var(--color-blue);
+  color: var(--color-white);
+  border: none;
+}
+
+.button:hover {
+  filter: opacity(0.8);
+}
+
+.title-page {
+  color: var(--color-white);
+  background-color: var(--color-blue-light);
+  padding-left: 10px;
+  padding-right: 10px;
+  min-width: 300px;
+}
+
+.container-page {
+  min-width: 300px;
+}
+
+/**** PAGE USER ****/
+.table-users {
+  min-width: 300px;
+}
+
+.td {
+  padding: 2px 5px;
+}
+
+.tr:nth-child(odd) {
+  background-color: var(--color-blue-light);
+  color: var(--color-white);
+  a {
+    color: var(--color-white);
+  }
+}
+
+.tr:nth-child(even) {
+  a {
+    color: var(--color-black);
+  }
+}
+
+/**** PAGE DETAILS USER ****/
+
+.container-details-user {
+  min-width: 300px;
+}
+
+.details-user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/**** PAGE BLOG ****/
+
+.container-blog {
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/**** formAddBlogs ****/
+
+.container-form-new-blog {
+  min-width: 300px;
+}
+
+.form-new-blog {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 0px;
+}
+
+.display-none {
+  display: none;
+}
+
+.display-toggable {
+  display: flex;
+  flex-direction: column;
+}
+
+/**** BlogsDetails ****/
+
+.container-details-blogs {
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/**** Utility class ****/
+
+.d-flex {
+  display: flex;
+}
+
+.f-column {
+  flex-direction: column;
+}
+
+.f-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.f-justify-center {
+  justify-content: center;
+}
+
+.f-align-center {
+  align-items: center;
+}
+
+.gap-5 {
+  gap: 5px;
+}
+
+.gap-10 {
+  gap: 10px;
 }

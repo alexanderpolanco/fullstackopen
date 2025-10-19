@@ -1,11 +1,19 @@
 import { useState } from "react";
 import Input from "./Input";
-import { postBlog } from "../services/blogs";
+import { agregarBlog } from "../services/blogs";
 
-const FormAddBlogs = ({ handleClickCreate }) => {
+import { showNotification } from "../reducers/notificationReducer";
+import { useStore } from "../context/globalContext";
+
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+const FormAddBlogs = ({ toggleFormRef, stateSession }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
+
+  const queryClient = useQueryClient();
+  const { dispatch } = useStore();
 
   const limpiarCampos = () => {
     setTitle("");
@@ -13,20 +21,55 @@ const FormAddBlogs = ({ handleClickCreate }) => {
     setUrl("");
   };
 
+  const agregarBlogMutation = useMutation({
+    mutationFn: agregarBlog,
+    onSuccess: (blog) => {
+      const blogs = queryClient.getQueryData(["blogs"]);
+      const newBlog = {
+        user: blog.user,
+        author: blog.author,
+        id: blog.id,
+        likes: blog.likes,
+        title: blog.title,
+        url: blog.url,
+      };
+
+      queryClient.setQueryData(["blogs"], blogs.concat(newBlog));
+      showNotification(
+        {
+          description: `A new blog ${blog.title} ${blog.author}`,
+          type: "success",
+        },
+        dispatch,
+      );
+      limpiarCampos();
+      toggleFormRef.current.toggleVisibility();
+    },
+  });
+
+  const handleClickCreate = async (event, title, author, url) => {
+    event.preventDefault();
+    if (title !== "" && author !== "" && url !== "") {
+      agregarBlogMutation.mutate({
+        blog: { title, author, url },
+        token: stateSession.token,
+      });
+    }
+  };
+
   return (
-    <div>
-      <h1>create new</h1>
+    <div className="container-form-new-blog">
+      <h1 className="title-page">Create new</h1>
       <form
-        onSubmit={(event) =>
-          handleClickCreate(event, postBlog, limpiarCampos, title, author, url)
-        }
+        className="form-new-blog"
+        onSubmit={(event) => handleClickCreate(event, title, author, url)}
       >
         <div>
           <Input
             type="text"
             value={title}
             onChange={setTitle}
-            label="title"
+            label="Title"
             data-testid="title"
           />
         </div>
@@ -35,7 +78,7 @@ const FormAddBlogs = ({ handleClickCreate }) => {
             type="text"
             value={author}
             onChange={setAuthor}
-            label="author"
+            label="Author"
             data-testid="author"
           />
         </div>
@@ -44,11 +87,11 @@ const FormAddBlogs = ({ handleClickCreate }) => {
             type="text"
             value={url}
             onChange={setUrl}
-            label="url"
+            label="Url"
             data-testid="url"
           />
         </div>
-        <button type="submit">create</button>
+        <button className="button cursor-pointer" type="submit">Create</button>
       </form>
     </div>
   );

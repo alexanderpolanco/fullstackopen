@@ -1,28 +1,52 @@
 import { useState } from "react";
-import { putBlog, deleteBlog } from "../services/blogs";
+import { NavLink } from "react-router";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteBlog, actualizarBlog } from "../services/blogs";
 
-const handleRemoveBlog = async (blog, token, updateBlogs) => {
+const handleRemoveBlog = async (blog, token, queryClient) => {
   const confirm = window.confirm(`Remove blog ${blog.title} by ${blog.author}`);
   if (!confirm) {
     return;
   }
   const response = await deleteBlog(blog.id, token);
   if (response) {
-    updateBlogs();
+    const blogs = queryClient.getQueryData(["blogs"]);
+    queryClient.setQueryData(
+      ["blogs"],
+      blogs.filter((a) => a.id !== blog.id),
+    );
   }
 };
 
-const Blog = ({ blog, updateBlogs, session, handleClickLike }) => {
+const handleClickLike = (actualizarBlogMutation, blog) => {
+  delete blog.user;
+  actualizarBlogMutation.mutate({ ...blog, likes: blog.likes + 1 });
+};
+
+const Blog = ({ blog, session }) => {
   const [show, setShow] = useState(false);
   const toggleVisibility = () => {
     setShow(!show);
   };
 
+  const queryClient = useQueryClient();
+
+  const actualizarBlogMutation = useMutation({
+    mutationFn: actualizarBlog,
+    onSuccess: (blog) => {
+      const blogs = queryClient.getQueryData(["blogs"]);
+      queryClient.setQueryData(
+        ["blogs"],
+        blogs.filter((a) => a.id !== blog.id).concat(blog),
+      );
+    },
+  });
+
   return (
     <div>
       <div className="containerBlog">
-        {`${blog.title} `}
-        <button onClick={toggleVisibility}>view</button>
+        <NavLink to={`/blogs/${blog.id}`}>{`${blog.title} `}</NavLink>
+        {/*<button onClick={toggleVisibility}>view</button>*/}
       </div>
       <div
         className="containerBlog"
@@ -30,12 +54,13 @@ const Blog = ({ blog, updateBlogs, session, handleClickLike }) => {
         style={{ display: show ? "" : "none" }}
       >
         <div>
-          {blog.author} <button onClick={toggleVisibility}>hide</button>
+          {blog.author}
+          <button onClick={toggleVisibility}>hide</button>
         </div>
         <div>{blog.url}</div>
         <div>
           {`likes ${blog.likes} `}
-          <button onClick={() => handleClickLike(blog, updateBlogs, putBlog)}>
+          <button onClick={() => handleClickLike(actualizarBlogMutation, blog)}>
             like
           </button>
         </div>
@@ -43,7 +68,7 @@ const Blog = ({ blog, updateBlogs, session, handleClickLike }) => {
         {blog.user?.username === session.username && (
           <div>
             <button
-              onClick={() => handleRemoveBlog(blog, session.token, updateBlogs)}
+              onClick={() => handleRemoveBlog(blog, session.token, queryClient)}
             >
               remove
             </button>

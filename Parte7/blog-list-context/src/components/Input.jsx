@@ -1,6 +1,6 @@
 const Input = ({ value, onChange, type, label, ...rest }) => (
-  <label>
-    {label}
+  <label className="input">
+    <div className="text-label">{label}</div>
     <input
       type={type}
       value={value}

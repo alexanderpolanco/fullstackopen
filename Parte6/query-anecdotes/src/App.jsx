@@ -2,13 +2,11 @@ import AnecdoteForm from "./components/AnecdoteForm";
 import Notification from "./components/Notification";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getAnecdotes, updateAnecdote } from "./services/anecdotes";
-import {useNotificationDispatch} from "./components/NotificationContext"
-
+import { useNotificationDispatch } from "./components/NotificationContext";
 
 const App = () => {
   const queryClient = useQueryClient();
-  const dispatch = useNotificationDispatch()
-
+  const dispatch = useNotificationDispatch();
 
   const updateAnecdoteMutation = useMutation({
     mutationFn: updateAnecdote,
@@ -18,7 +16,7 @@ const App = () => {
         ["anecdotes"],
         anecdotes.filter((a) => a.id !== anecdote.id).concat(anecdote)
       );
-      dispatch({type: "update", payload: anecdote.content})
+      dispatch({ type: "update", payload: anecdote.content });
       //queryClient.invalidateQueries({ queryKey: ["anecdotes"] }); <-- realiza una peticion al servidor y actualiza el estado en la aplicación
     },
   });
@@ -31,14 +29,15 @@ const App = () => {
     queryKey: ["anecdotes"],
     queryFn: getAnecdotes,
   });
-  console.log(JSON.parse(JSON.stringify(result)));
 
   if (result.isLoading) {
     return <div>loading data...</div>;
   }
 
   if (result.isError) {
-    return <span>anecdote service not available due to problems in server</span>
+    return (
+      <span>anecdote service not available due to problems in server</span>
+    );
   }
 
   const anecdotes = result.data;

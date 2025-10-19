@@ -1,40 +1,26 @@
 import axios from "axios";
 const url = "/api/blogs";
 
-const getAll = async () => {
-  let response = false;
-  try {
-    response = await axios.get(url);
-  } catch (error) {
-    console.error(error);
-  }
-  return response;
-};
+const getAllBlogs = () => axios.get(url).then((res) => res.data);
+const getBlog = (id) => axios.get(`${url}/${id}`).then((res) => res.data);
 
-const postBlog = async (blog, token) => {
-  let response = false;
+const agregarBlog = ({ blog, token }) => {
   const headers = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
-  try {
-    response = await axios.post(url, blog, headers);
-  } catch (error) {
-    console.error(error);
-  }
-  return response;
+  return axios.post(url, blog, headers).then((res) => res.data);
 };
 
-const putBlog = async (blog) => {
-  let response = false;
+const actualizarBlog = (blog) => {
+  return axios.put(`${url}/${blog.id}`, blog).then((res) => res.data);
+};
 
-  try {
-    response = await axios.put(`${url}/${blog.id}`, blog);
-  } catch (error) {
-    console.error(error);
-  }
-  return response;
+const agregarComentarios = ({ idBlog, comment }) => {
+  return axios
+    .post(`${url}/${idBlog}/comments`, { comment })
+    .then((res) => res.data);
 };
 
 const deleteBlog = async (id, token) => {
@@ -53,4 +39,11 @@ const deleteBlog = async (id, token) => {
   return response;
 };
 
-export { getAll, postBlog, putBlog, deleteBlog };
+export {
+  getAllBlogs,
+  getBlog,
+  agregarBlog,
+  actualizarBlog,
+  agregarComentarios,
+  deleteBlog,
+};

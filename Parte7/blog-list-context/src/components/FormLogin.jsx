@@ -1,67 +1,69 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
 import Input from "./Input";
-import login from "../services/login";
+import { loginAction } from "../reducers/sessionReducer";
+import Notification from "../components/Notification";
+import { useStore } from "../context/globalContext";
 
-const FormLogin = ({ state, setState }) => {
-  const { message } = state;
-  const { setStateSession, setMessage } = setState;
+const FormLogin = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const {
+    dispatch,
+    state: { session },
+  } = useStore();
+
+  useEffect(() => {
+    const sessionStorage = localStorage.getItem("session");
+
+    if (sessionStorage && session === null) {
+      const sessionParse = JSON.parse(sessionStorage);
+      dispatch({
+        type: "login",
+        payload: sessionParse,
+      });
+    }
+
+    if (session !== null) {
+      navigate("/blogs");
+    }
+  }, [session]);
+
   const handleClickLogin = async (event) => {
     event.preventDefault();
-    const response = await login(username, password);
-    if ("error" in response) {
-      setMessage({ description: "wrong username or password", type: "error" });
-      setTimeout(() => {
-        setMessage(null);
-      }, 5000);
-    } else {
-      const { data } = response;
-
-      const dataSession = {
-        username: data.username,
-        token: data.token,
-      };
-
-      setStateSession(dataSession);
-      localStorage.setItem("session", JSON.stringify(dataSession));
-      setUsername("");
-      setPassword("");
-      setMessage(null);
-    }
+    loginAction({ username, password }, dispatch);
   };
 
   return (
-    <form onSubmit={handleClickLogin}>
-      <h1>log in to application</h1>
-      <div>
-        {message && (
-          <div className={message.type === "error" ? "error" : "success"}>
-            {message.description}
-          </div>
-        )}
-      </div>
-      <div>
-        <Input
-          data-testid="username"
-          type="text"
-          value={username}
-          onChange={setUsername}
-          label="username"
-        />
-      </div>
-      <div>
-        <Input
-          data-testid="password"
-          type="password"
-          value={password}
-          onChange={setPassword}
-          label="password"
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
+    <div className="container-login">
+      <form className="formLogin" onSubmit={handleClickLogin}>
+        <h2>LOG IN TO APPLICATION</h2>
+        <div className="container-notifications">
+          <Notification />
+        </div>
+        <div>
+          <Input
+            data-testid="username"
+            type="text"
+            value={username}
+            onChange={setUsername}
+            label="Username"
+          />
+        </div>
+        <div>
+          <Input
+            data-testid="password"
+            type="password"
+            value={password}
+            onChange={setPassword}
+            label="Password"
+          />
+        </div>
+        <button type="submit" className="cursor-pointer button">login</button>
+      </form>
+    </div>
   );
 };
 

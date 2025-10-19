@@ -5,7 +5,7 @@ const Togglable = forwardRef(({ children, buttonLabel }, refs) => {
   const [visible, setVisible] = useState(false);
 
   const hideWhenVisible = { display: visible ? "none" : "" };
-  const showWhenVisible = { display: visible ? "" : "none" };
+  const showWhenVisible = visible ? "display-toggable" : "display-none";
 
   const toggleVisibility = () => {
     setVisible(!visible);
@@ -20,11 +20,13 @@ const Togglable = forwardRef(({ children, buttonLabel }, refs) => {
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{buttonLabel}</button>
+        <button className="button cursor-pointer" onClick={toggleVisibility}>
+          {buttonLabel}
+        </button>
       </div>
-      <div style={showWhenVisible}>
+      <div className={showWhenVisible}>
         {children}
-        <button onClick={toggleVisibility}>cancel</button>
+        <button className="cursor-pointer" onClick={toggleVisibility}>cancel</button>
       </div>
     </div>
   );
