@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "node --env-file=.env.development --watch index.js",
+    "prod": "node --watch index.js"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +15,8 @@
   "type": "module",
   "dependencies": {
     "@apollo/server": "^5.0.0",
-    "graphql": "^16.11.0"
+    "graphql": "^16.11.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.0.0"
   }
 }
