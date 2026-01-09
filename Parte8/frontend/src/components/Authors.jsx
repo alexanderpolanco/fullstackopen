@@ -5,10 +5,6 @@ import { UPDATE_AUTHOR_BORN } from '../api/graphql/mutations/updateBorn.mutation
 import { Select } from './Select';
 
 const Authors = (props) => {
-  if (!props.show) {
-    return null
-  }
-
   const [selectedAuthor, setSelectedAuthor] = useState('');
   const [born, setBorn] = useState('');
 
@@ -40,6 +36,9 @@ const Authors = (props) => {
     setBorn('')
   }
 
+  if (!props.show) {
+    return null
+  }
 
   return (
     <div>
@@ -73,8 +72,6 @@ const Authors = (props) => {
       ) : null}
     </div>
   )
-
-
 }
 
 export default Authors

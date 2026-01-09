@@ -71,7 +71,6 @@ const resolvers = {
 
             if (authorName) {
                 const author = await Author.findOne({ name: authorName })
-       
                 filter.author = author ? author._id : null
             }
             if (genre) {
@@ -182,7 +181,10 @@ const resolvers = {
                 username: user.username,
                 id: user._id,
             }
-            return { value: jwt.sign(userForToken, process.env.JWT_SECRET) }
+            if (user) {
+                return { value: jwt.sign(userForToken, process.env.JWT_SECRET) }
+            }
+            return null
         }
     }
 }
@@ -201,6 +203,7 @@ startStandaloneServer(server, {
             const currentUser = await User.findById(decodedToken.id)
             return { currentUser }
         }
+        return {}
     }
 }).then(({ url }) => {
     console.log(`Server ready at ${url}`)

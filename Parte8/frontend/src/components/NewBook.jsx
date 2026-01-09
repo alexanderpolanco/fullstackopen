@@ -12,18 +12,12 @@ const NewBook = (props) => {
   const [genres, setGenres] = useState([])
 
   const [mutate, { data, loading, error }] = useMutation(ADD_BOOK, {
-    refetchQueries: [{ query: GET_ALL_AUTHORS }, { query: GET_ALL_BOOKS }]
+    refetchQueries: [{ query: GET_ALL_AUTHORS }, { query: GET_ALL_BOOKS, variables: { genre: null } }]
   })
-
-  if (!props.show) {
-    return null
-  }
 
   const submit = async (event) => {
     event.preventDefault()
     mutate({ variables: { title, author, published: parseInt(published), genres } })
-
-    console.log('add book...')
 
     setTitle('')
     setPublished('')
@@ -35,6 +29,10 @@ const NewBook = (props) => {
   const addGenre = () => {
     setGenres(genres.concat(genre))
     setGenre('')
+  }
+
+  if (!props.show) {
+    return null
   }
 
   return (
@@ -74,6 +72,11 @@ const NewBook = (props) => {
         <div>genres: {genres.join(' ')}</div>
         <button type="submit">create book</button>
       </form>
+      {loading ? (
+        <p>adding book...</p>
+      ) : error ? (
+        <p>error adding book</p>
+      ) : null}
     </div>
   )
 }
