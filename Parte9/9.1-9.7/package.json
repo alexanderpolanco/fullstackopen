@@ -1,0 +1,22 @@
+{
+  "name": "9.1-9.7",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "node index.js",
+    "dev": "npx tsx watch index.ts",
+    "bmiCalculator": "npx tsx watch bmiCalculator.ts",
+    "exerciseCalculator": "npx tsx watch exerciseCalculatorts.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.9",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}
