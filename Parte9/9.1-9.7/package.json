@@ -9,14 +9,18 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "node index.js",
+    "start": "npx tsx index.ts",
     "dev": "npx tsx watch index.ts",
     "bmiCalculator": "npx tsx watch bmiCalculator.ts",
     "exerciseCalculator": "npx tsx watch exerciseCalculatorts.ts"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "@types/node": "^25.0.9",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
   }
 }
