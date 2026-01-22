@@ -8,7 +8,11 @@ interface Result {
     average: number;
 }
 
-function calculateExercises(hours: number[], target: number): Result {
+interface Error {
+    error: string;
+}
+
+export function calculateExercises(hours: number[], target: number): Result | Error {
     try {
         if (hours.length === 0) {
             throw new Error('No training hours provided')
@@ -26,11 +30,16 @@ function calculateExercises(hours: number[], target: number): Result {
         const rating = success ? 3 : 2
         const ratingDescription = success ? 'very good' : 'not too bad but could be better'
         return { periodLength: trainingDays, trainingDays, success, rating, ratingDescription, target, average }
-    } catch (error) {
-        console.log(error.message)
+    } catch (error: unknown ) {
+        if (error instanceof Error) {
+            return { error: error.message }
+        }
+        return { error: 'Unknown error' }
     }
 }
 
+/*
 const hours: number[] = process.argv.slice(3).map(Number)
 const target: number = Number(process.argv.slice(2)[0])
 console.log(calculateExercises(hours, target))
+*/
