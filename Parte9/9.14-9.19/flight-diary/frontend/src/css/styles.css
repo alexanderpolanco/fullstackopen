@@ -1,0 +1,11 @@
+.maxWidth-300 {
+    max-width: 300px;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.flex-column {
+    flex-direction: column;
+}
