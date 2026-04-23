@@ -1,5 +1,6 @@
 import express from 'express';
 import patientsRouter from './routes/patients.ts';
+import diagnosesRouter from './routes/diagnoses.ts';
 import cors from 'cors';
 
 const app = express();
@@ -13,6 +14,7 @@ app.get('/api/ping', (_req, res) => {
 });
 
 app.use('/api/patients', patientsRouter);
+app.use('/api/diagnoses', diagnosesRouter);
 
 const PORT = 3001;
 app.listen(PORT, () => {
